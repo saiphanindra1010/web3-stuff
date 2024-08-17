@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Wallet</title>
+</head>
+<body>
+    <h1>Web Wallet</h1>
+    <button id="generate-mnemonic">Generate Mnemonic</button>
+    <p id="mnemonic"></p>
+    <button id="add-wallet">Add Wallet</button>
+    <ul id="wallets"></ul>
+
+    <script src="https://cdn.jsdelivr.net/npm/bip39@3.0.4"></script>
+    <script src="https://cdn.jsdelivr.net/npm/ethers@6.6.0/dist/ethers.min.js"></script>
+    <script>
+        let mnemonic = '';
+        const wallets = [];
+
+        // Generate Mnemonic
+        document.getElementById('generate-mnemonic').onclick = async function() {
+            mnemonic = bip39.generateMnemonic();
+            document.getElementById('mnemonic').textContent = `Mnemonic: ${mnemonic}`;
+        };
+
+        // Add Wallet
+        document.getElementById('add-wallet').onclick = function() {
+            if (!mnemonic) {
+                alert('Please generate a mnemonic first!');
+                return;
+            }
+
+            // Derive wallet using ethers.js
+            const wallet = ethers.Wallet.fromMnemonic(mnemonic, `m/44'/60'/0'/0/${wallets.length}`);
+            wallets.push(wallet);
+
+            // Display wallet
+            const li = document.createElement('li');
+            li.textContent = `Wallet ${wallets.length}: Public Key - ${wallet.publicKey}`;
+            document.getElementById('wallets').appendChild(li);
+        };
+    </script>
+</body>
+</html>
