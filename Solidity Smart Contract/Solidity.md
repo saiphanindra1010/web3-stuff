@@ -3,7 +3,9 @@
 ## Data types
 
 ```solidity
-
+//bool True/False
+//int [unit ( 0 to +ve ) /int (-ve to +ve) ] 
+// address
 ```
 
 ## Function visibility
